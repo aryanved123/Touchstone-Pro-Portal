@@ -28,13 +28,13 @@ This project is a prototype of a candidate flagging system for Touchstone Instit
 ## How to Run the Project
 
 ### Backend Setup:
-cd backend
-npm install
-npm run dev
+- cd backend
+- npm install
+- npm run dev
 
 ### Frontend Setup:
-cd frontend
-http-server -p 8000
+- cd frontend
+- http-server -p 8000
 
 ### Prerequisites
 
