@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html ng-app="flagApp">
+<head>
+  <title>Candidate Flagging</title>
+
+  <!-- Bootstrap CSS (used instead of PrimeNG) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- AngularJS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+  <script src="app.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background: #f0f0f0;
+    }
+    .form-section {
+      margin-bottom: 2rem;
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .badge-high {
+      background-color: #f87171;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 5px;
+    }
+    .badge-medium {
+      background-color: #facc15;
+      color: black;
+      padding: 4px 8px;
+      border-radius: 5px;
+    }
+    .badge-none {
+      background-color: #4ade80;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body ng-controller="MainController">
+  <h2 class="mb-4">Candidate Evaluation Form</h2>
+
+  <div class="form-section">
+    <form ng-submit="evaluate()">
+      <div class="mb-3">
+        <label>Name</label>
+        <input type="text" class="form-control" ng-model="candidate.name" />
+      </div>
+
+      <div class="mb-3">
+        <label>Legal Status</label>
+        <input type="text" class="form-control" ng-model="candidate.legalStatus" placeholder="PR or Citizen" />
+      </div>
+
+      <div class="form-check mb-3">
+        <input type="checkbox" class="form-check-input" ng-model="candidate.hasMCCQE1" id="mccqe1" />
+        <label class="form-check-label" for="mccqe1">MCCQE1 Passed</label>
+      </div>
+
+      <div class="mb-3">
+        <label>Months Postgrad Training</label>
+        <input type="number" class="form-control" ng-model="candidate.postgradMonths" />
+      </div>
+
+      <div class="mb-3">
+        <label>Months Independent Practice</label>
+        <input type="number" class="form-control" ng-model="candidate.independentMonths" />
+      </div>
+
+      <div class="form-check mb-3">
+        <input type="checkbox" class="form-check-input" ng-model="candidate.completedRotations" id="rotations" />
+        <label class="form-check-label" for="rotations">Completed 7 Rotations</label>
+      </div>
+
+      <div class="form-check mb-3">
+        <input type="checkbox" class="form-check-input" ng-model="candidate.impairmentToPractice" id="impairment" />
+        <label class="form-check-label" for="impairment">Impairment to Practice</label>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Evaluate</button>
+    </form>
+  </div>
+
+  <div class="form-section" ng-if="flags.length > 0">
+    <h3>Flags Triggered</h3>
+    <table class="table table-bordered table-striped">
+      <thead class="table-light">
+        <tr>
+          <th>Type</th>
+          <th>Severity</th>
+          <th>Message</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="flag in flags">
+          <td>{{flag.type}}</td>
+          <td>
+            <span ng-class="{
+              'badge-high': flag.severity === 'high',
+              'badge-medium': flag.severity === 'medium',
+              'badge-none': flag.severity === 'none'
+            }">{{flag.severity}}</span>
+          </td>
+          <td>{{flag.message}}</td>
+          <td>
+            <button class="btn btn-outline-danger btn-sm" ng-click="override(flag)">Override</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
